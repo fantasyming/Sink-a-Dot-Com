@@ -159,3 +159,39 @@ public class SimpleDotComGame{
 	}
 }
 ```
+
+```
+import java.io.*;
+
+public class GameHelper{
+	public String getUserInput(String prompt){
+		String inputLine = null;
+		System.out.print(prompt+" ");
+		try{
+
+			BufferedReader is = new BufferedReader(new InputStreamReader(System.in));
+			inputLine = is.readLine();
+			if(inputLine.length() == 0)
+				return null;
+		}catch(IOException e){
+			System.out.println("IOException"+e);
+		}
+		return inputLine;
+	}
+}
+```
+####程序Bug
+- 运行时输入同一个数都击中
+![p4](https://raw.githubusercontent.com/fantasyming/Sink-a-Dot-Com/master/image/4.PNG) 
+
+- 这段代码说明，每次位置和猜测的数一直就会输出`hit`,并且`numOfHits`也在变
+
+```
+        for(int cell : locationCells){
+			if(cell == guess){
+				result = "hit";
+					numOfHits++;
+					break;
+				}
+		}
+```

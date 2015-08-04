@@ -18,26 +18,26 @@
 ###游戏设计
 
 ####设计简单游戏流程
- 开始游戏
+#####开始游戏
 - 创建3个.com的词条
 - 把词条放到网格中
 
-玩家猜词条
+#####玩家猜词条
 - 玩家开始猜词条的位置(比如输入`A5`,`B3`) 
 - 检测玩家输入结果,看是3种情况的哪一种
    A.  如果是`hit`,那么把击中的网格删除 (`A5`,`B3`)  
    B. 如果是`kill`,把整个.com词条删除
    C. A,B两项交替进行
    
-游戏结束
+#####游戏结束
 - 由玩家猜测次数来决定玩家的分数
 
-游戏流程图设计如下
+#####游戏流程图
 
 ![p3v](https://raw.githubusercontent.com/fantasyming/Sink-a-Dot-Com/master/image/3.PNG) 
  
 ####类的设计
-设计原则
+#####设计原则
 - 知道每个类应该做什么
 - 列出`instance variables and methods`
 - 为每个方法写`precode`
@@ -45,50 +45,83 @@
 - 实现类
 - 测试类
 - 调试和重构(`reimplement`)
-#Sink a Dot Com游戏设计实现
+#####Pre Code
+- 变量声明(`instance variable declarations`)
+- 方法声明(`method declarations`)
+- 方法逻辑(`method logic` )
+#####SimpleDotCom method描述
+#####声明
+- `locationCells`
+  声明一个`int`数组保存网格的位置
+- `numOfHits`
+  击中词条数目
+- `checkYourself()`
+  从用户输入获取字符串,返回`hit`,`miss`,`kill`
+- `setLocationCells()`
+  设置词条位置
+#####方法
+- `String checkYourself(String userGuess)`
+1. 获取用户猜测的次数字符串`String userGuess`
+2. 把字符串转化为`int`
+3.  从`locationCells`取猜的的位置
+4.  如果猜中
+5.  `numOfHits`+1
+6.  如果`numOfHits`是3,返回`kill`
+7.  否则返回`hit`
+8.  没猜中,返回`miss`
+- `void setLocationCells(int[] cellLocations)`
+1. 从整数数组得到网格位置
+2. 把参数赋值给`locationCells`
+#####test code
+- 为SimpleDotCom写的测试代码
+```
+public class SimpleDotComTestDrive{
+	public static void main(String[] args){
+		SimpleDotCom dot = new SimpleDotCom();
 
-###游戏描述
+		int[] locations = {2,3,4};
+		dot.setLocationCells(locations);
 
-- 在7x7的格子中击落.com的词条,这些词条占用3个格子游戏场景如下图所示
+		String userGuess = "2";//输入
+		String result = dot.checkYourself(userGuess);
+		String testResult = "failed";
+		if(result.equals("hit")){
+			testResult = "passed"//验证输入
+		}
+		System.out.println(testResult);
 
-![game layer1](https://raw.githubusercontent.com/fantasyming/Sink-a-Dot-Com/master/image/1.PNG)
+	}
+}
+```
 
-- 在游戏中(这个版本不使用GUI)需要在command-line中输入格子的位置来猜测是否是词条所在的位置(例如`A3`，`B5`)
-1. 如果击中,输出`hit`
-2. 如果没有击中,输出`miss`
-3. 如果把词条的三个格子都击中,输出`kill`
+####checkYourself实现
+```
+public class SimpleDotCom{
+		public int[] locationCells;
+		public int numOfHits;
 
-- 游戏过程模拟
+		public void setLocationCells(int[] celllocations){
+			locationCells = celllocations;
+		} 
 
-![p2](https://raw.githubusercontent.com/fantasyming/Sink-a-Dot-Com/master/image/2.PNG)
+		public String checkYourself(String stringguess){
+			int guess = Integer.parseInt(stringguess);
 
-###游戏设计
+			String result = "miss";
 
-####设计简单游戏流程
- 开始游戏
-- 创建3个.com的词条
-- 把词条放到网格中
+			for(int cell : locationCells){
+				if(cell == guess){
+					result = "hit";
+					numOfHits++;
+					break;
+				}
+			}
 
-玩家猜词条
-- 玩家开始猜词条的位置(比如输入`A5`,`B3`) 
-- 检测玩家输入结果,看是3种情况的哪一种
-   A.  如果是`hit`,那么把击中的网格删除 (`A5`,`B3`)  
-   B. 如果是`kill`,把整个.com词条删除
-   C. A,B两项交替进行
-   
-游戏结束
-- 由玩家猜测次数来决定玩家的分数
+			if(numOfHits == locationCells.length){
+				result = "kill";
+			}
 
-游戏流程图设计如下
-
-![p3v](https://raw.githubusercontent.com/fantasyming/Sink-a-Dot-Com/master/image/3.PNG) 
- 
-####类的设计
-设计原则
-- 知道每个类应该做什么
-- 列出`instance variables and methods`
-- 为每个方法写`precode`
-- 为每个方法写`test code`
-- 实现类
-- 测试类
-- 调试和重构(`reimplement`)
+			return result;
+		}
+}
+```

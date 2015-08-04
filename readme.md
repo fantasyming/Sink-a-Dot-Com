@@ -195,3 +195,9 @@ public class GameHelper{
 				}
 		}
 ```
+- 解决思路
+1. 在生成一个数组,每个位置对应数的位置,初始为`false`,每次击中置为`true`,第二次在访问先看对应位置是不是false，如果不是那么表示这个已经被`hit`,就不能输出`hit
+![p5](https://raw.githubusercontent.com/fantasyming/Sink-a-Dot-Com/master/image/5.PNG) 
+
+2. 直接在原数组上改,`hit`过后的位置置为`-1`
+![p6](https://raw.githubusercontent.com/fantasyming/Sink-a-Dot-Com/master/image/7.PNG) 

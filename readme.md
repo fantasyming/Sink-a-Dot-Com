@@ -125,3 +125,37 @@ public class SimpleDotCom{
 		}
 }
 ```
+####SimpleDotGame 描述
+- 声明一个变量`numOfGuess`,初始值为0
+- `SimpleDotCom`实例
+- 生成0-4之间的随机数作为词条的位置
+- 生出一个大小为3的数组放随机数
+- 调用	`setLocationCells()`
+- 声明一个变量`isAlive`,表明游戏状态
+
+```
+public class SimpleDotComGame{
+
+	public static void main(String[] args){
+		int numOfGuess = 0;
+		boolean isAlive = true;
+		int randomNum = (int)(Math.random()*5);
+		int[] locations = {randomNum,randomNum+1,randomNum+2};
+
+		GameHelper helper = new GameHelper();
+		SimpleDotCom dot = new SimpleDotCom();
+		dot.setLocationCells(locations);
+		
+
+		while(isAlive == true){
+			String guess = helper.getUserInput("enter a number");
+			String result = dot.checkYourself(guess);
+			numOfGuess++;
+			if(result.equals("kill")){
+				isAlive = false;
+				System.out.println("You took "+numOfGuess+" guesses");
+			}
+		}
+	}
+}
+```
